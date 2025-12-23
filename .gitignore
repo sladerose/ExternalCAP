@@ -1,0 +1,16 @@
+node_modules/
+gen/
+mta_archives/
+*.log
+.vscode/
+.DS_Store
+package-lock.json
+default-*.json
+*.dtb
+dist/
+build/
+.env
+db/*.db
+srv/*.db
+app/*/webapp/dist/
+app/*/webapp/resources/

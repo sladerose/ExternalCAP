@@ -1,0 +1,184 @@
+<mvc:View
+    controllerName="external.ca.sitesdown.controller.Home"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:card="sap.f.cards"
+    xmlns:core="sap.ui.core"
+    xmlns:grid="sap.ui.layout.cssgrid"
+    xmlns:vbm="sap.ui.vbm"
+    displayBlock="true">
+
+    <Page showHeader="false" enableScrolling="false" backgroundDesign="List">
+        <f:ShellBar
+            title="{i18n>appTitle}"
+            homeIcon="sap-icon://monitor-payments">
+            <f:profile>
+                <Avatar initials="UI" />
+            </f:profile>
+        </f:ShellBar>
+        <f:DynamicPage headerExpanded="true" preserveHeaderStateOnScroll="true" fitContent="true">
+            <f:content>
+                <IconTabBar id="idIconTabBar" expanded="true" stretchContentHeight="true" class="sapUiResponsiveContentPadding">
+                    <items>
+                        <IconTabFilter icon="sap-icon://alert" text="{i18n>siteMonitoring}" key="monitoring">
+                            <VBox class="sapUiContentPadding">
+                                <Title text="{i18n>sitesDownTitle}" level="H2" class="sapUiSmallMarginBottom" />
+                                <f:GridContainer
+                                    id="sitesGrid"
+                                    minHeight="150px"
+                                    items="{
+                                        path: '/SitesDown',
+                                        sorter: { path: 'downtime_hours', descending: true }
+                                    }">
+                                    <f:layout>
+                                        <f:GridContainerSettings rowSize="80px" columnSize="300px" gap="12px" />
+                                    </f:layout>
+                                    <f:items>
+                                        <f:Card>
+                                            <f:header>
+                                                <card:Header
+                                                    title="{station_name}"
+                                                    iconSrc="sap-icon://monitor"
+                                                    statusText="{downtime_duration}">
+                                                </card:Header>
+                                            </f:header>
+                                            <f:content>
+                                                <VBox class="sapUiSmallMargin">
+                                                    <HBox justifyContent="SpaceBetween">
+                                                        <Label text="{i18n>lastActivity}:" design="Bold" />
+                                                        <Text text="{path: 'last_file_activity_time', formatter: '.formatDate'}" />
+                                                    </HBox>
+                                                    <HBox justifyContent="SpaceBetween" class="sapUiTinyMarginTop">
+                                                        <Label text="{i18n>downtimeDuration}:" design="Bold" />
+                                                        <ObjectStatus 
+                                                            text="{downtime_duration}" 
+                                                            state="{path: 'criticality', formatter: '.formatCriticality'}" 
+                                                            inverted="true" 
+                                                        />
+                                                    </HBox>
+                                                </VBox>
+                                            </f:content>
+                                        </f:Card>
+                                    </f:items>
+                                </f:GridContainer>
+
+                                <Title text="{i18n>reliabilityReportTitle}" level="H2" class="sapUiMediumMarginTop sapUiSmallMarginBottom" />
+                                <Table items="{/SiteReliability}">
+                                    <columns>
+                                        <Column><Text text="{i18n>stationName}" /></Column>
+                                        <Column hAlign="Center"><Text text="{i18n>incidents7Days}" /></Column>
+                                        <Column><Text text="{i18n>reliabilityStatus}" /></Column>
+                                    </columns>
+                                    <items>
+                                        <ColumnListItem>
+                                            <cells>
+                                                <Text text="{station_name}" />
+                                                <Text text="{incidents_last_7_days}" />
+                                                <ObjectStatus 
+                                                    text="{reliability_status}" 
+                                                    state="{path: 'reliability_status', formatter: '.formatReliabilityState'}" 
+                                                />
+                                            </cells>
+                                        </ColumnListItem>
+                                    </items>
+                                </Table>
+                            </VBox>
+                        </IconTabFilter>
+
+                        <IconTabFilter icon="sap-icon://history" text="{i18n>fileFreshness}" key="freshness">
+                            <Table items="{/SiteFilePulse}" sticky="ColumnHeaders">
+                                <headerToolbar>
+                                    <OverflowToolbar>
+                                        <Title text="{i18n>freshnessTitle}" level="H2" />
+                                    </OverflowToolbar>
+                                </headerToolbar>
+                                <columns>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>stationName}" /></Column>
+                                    <Column minScreenWidth="Tablet" demandPopin="true"><Text text="{i18n>province}" /></Column>
+                                    <Column hAlign="Center"><Text text="POS" /></Column>
+                                    <Column hAlign="Center"><Text text="BORS" /></Column>
+                                    <Column hAlign="Center"><Text text="DELIVS" /></Column>
+                                    <Column hAlign="Center"><Text text="STA" /></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <VBox>
+                                                <Label text="{station_name}" design="Bold" />
+                                            </VBox>
+                                            <Text text="{province}" />
+                                            <core:Icon src="sap-icon://circle-task-2" color="{path: 'last_pos', formatter: '.formatFreshnessIcon'}" tooltip="{path: 'last_pos', formatter: '.formatDate'}" />
+                                            <core:Icon src="sap-icon://circle-task-2" color="{path: 'last_bors', formatter: '.formatFreshnessIcon'}" tooltip="{path: 'last_bors', formatter: '.formatDate'}" />
+                                            <core:Icon src="sap-icon://circle-task-2" color="{path: 'last_delivs', formatter: '.formatFreshnessIcon'}" tooltip="{path: 'last_delivs', formatter: '.formatDate'}" />
+                                            <core:Icon src="sap-icon://circle-task-2" color="{path: 'last_site_sta', formatter: '.formatFreshnessIcon'}" tooltip="{path: 'last_site_sta', formatter: '.formatDate'}" />
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </IconTabFilter>
+
+                        <IconTabFilter icon="sap-icon://map" text="{i18n>regionalHealth}" key="health">
+                            <VBox class="sapUiContentPadding" height="100%">
+                                <Title text="{i18n>regionalHealthTitle}" level="H2" class="sapUiSmallMarginBottom" />
+                                <Table items="{/RegionalHealth}" id="regionalHealthTable" class="sapUiSmallMarginBottom">
+                                    <columns>
+                                        <Column><Text text="{i18n>province}" /></Column>
+                                        <Column hAlign="Center"><Text text="{i18n>sitesTotal}" /></Column>
+                                        <Column hAlign="Center"><Text text="{i18n>sitesDown}" /></Column>
+                                        <Column><Text text="{i18n>uptimePercentage}" /></Column>
+                                    </columns>
+                                    <items>
+                                        <ColumnListItem>
+                                            <cells>
+                                                <Text text="{province}" />
+                                                <Text text="{total_sites}" />
+                                                <Text text="{sites_down}" />
+                                                <ProgressIndicator
+                                                    percentValue="{uptime_percentage}"
+                                                    displayValue="{uptime_percentage}%"
+                                                    showValue="true"
+                                                    state="{path: 'uptime_percentage', formatter: '.formatUptimeState'}" />
+                                            </cells>
+                                        </ColumnListItem>
+                                    </items>
+                                </Table>
+                                
+                                <VBox height="500px" class="sapUiSmallMarginTop">
+                                    <!-- Leaflet Map Fallback -->
+                                    <core:HTML content='&lt;link rel=&quot;stylesheet&quot; href=&quot;https://unpkg.com/leaflet@1.9.4/dist/leaflet.css&quot; /&gt;&lt;script src=&quot;https://unpkg.com/leaflet@1.9.4/dist/leaflet.js&quot;&gt;&lt;/script&gt;&lt;div id=&quot;map&quot; style=&quot;height: 500px; width: 100%; border-radius: 8px; border: 1px solid #ddd;&quot;&gt;&lt;/div&gt;' afterRendering=".onMapRendered" />
+                                </VBox>
+                            </VBox>
+                        </IconTabFilter>
+
+                        <IconTabFilter icon="sap-icon://database" text="{i18n>dataAudit}" key="audit">
+                            <Table items="{/DuplicateFileAudit}">
+                                <headerToolbar>
+                                    <OverflowToolbar>
+                                        <Title text="{i18n>duplicateAuditTitle}" level="H2" />
+                                    </OverflowToolbar>
+                                </headerToolbar>
+                                <columns>
+                                    <Column><Text text="{i18n>fileName}" /></Column>
+                                    <Column hAlign="Center"><Text text="{i18n>processingCount}" /></Column>
+                                    <Column><Text text="{i18n>firstSeen}" /></Column>
+                                    <Column><Text text="{i18n>lastSeen}" /></Column>
+                                </columns>
+                                <items>
+                                    <ColumnListItem>
+                                        <cells>
+                                            <Text text="{file_name}" />
+                                            <ObjectNumber number="{processing_count}" state="Error" />
+                                            <Text text="{path: 'first_seen', formatter: '.formatDate'}" />
+                                            <Text text="{path: 'last_seen', formatter: '.formatDate'}" />
+                                        </cells>
+                                    </ColumnListItem>
+                                </items>
+                            </Table>
+                        </IconTabFilter>
+                    </items>
+                </IconTabBar>
+            </f:content>
+        </f:DynamicPage>
+    </Page>
+</mvc:View>
