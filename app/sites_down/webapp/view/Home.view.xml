@@ -9,14 +9,16 @@
     xmlns:vbm="sap.ui.vbm"
     displayBlock="true">
 
-    <Page showHeader="false" enableScrolling="false" backgroundDesign="List">
-        <f:ShellBar
-            title="{i18n>appTitle}"
-            homeIcon="sap-icon://monitor-payments">
-            <f:profile>
-                <Avatar initials="UI" />
-            </f:profile>
-        </f:ShellBar>
+    <Page showHeader="true" enableScrolling="false" backgroundDesign="List">
+        <customHeader>
+            <f:ShellBar
+                title="{i18n>appTitle}"
+                homeIcon="sap-icon://monitor">
+                <f:profile>
+                    <Avatar initials="UI" />
+                </f:profile>
+            </f:ShellBar>
+        </customHeader>
         <f:DynamicPage headerExpanded="true" preserveHeaderStateOnScroll="true" fitContent="true">
             <f:content>
                 <IconTabBar id="idIconTabBar" expanded="true" stretchContentHeight="true" class="sapUiResponsiveContentPadding">

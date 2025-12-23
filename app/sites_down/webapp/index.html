@@ -18,20 +18,23 @@
     <script id="sap-ui-bootstrap" src="https://ui5.sap.com/resources/sap-ui-core.js" data-sap-ui-theme="sap_horizon"
         data-sap-ui-resourceroots='{
             "external.ca.sitesdown": "./"
-        }' 
-        data-sap-ui-libs="sap.m,sap.f,sap.ui.layout,sap.ui.vbm"
-        data-sap-ui-compatVersion="edge" data-sap-ui-async="true" data-sap-ui-frameOptions="trusted"></script>
+        }' data-sap-ui-libs="sap.m,sap.f,sap.ui.layout,sap.ui.vbm" data-sap-ui-compatVersion="edge"
+        data-sap-ui-async="true" data-sap-ui-frameOptions="trusted"></script>
     <script>
         sap.ui.getCore().attachInit(function () {
             sap.ui.require([
-                "sap/ui/core/ComponentContainer"
-            ], function (ComponentContainer) {
-                new ComponentContainer({
-                    name: "external.ca.sitesdown",
-                    settings: {
-                        id: "external.ca.sitesdown"
-                    },
-                    async: true
+                "sap/ui/core/ComponentContainer",
+                "sap/m/Shell"
+            ], function (ComponentContainer, Shell) {
+                new Shell({
+                    app: new ComponentContainer({
+                        name: "external.ca.sitesdown",
+                        settings: {
+                            id: "external.ca.sitesdown"
+                        },
+                        async: true
+                    }),
+                    appWidthLimited: false
                 }).placeAt("content");
             });
         });

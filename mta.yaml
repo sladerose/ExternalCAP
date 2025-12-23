@@ -40,25 +40,11 @@ modules:
     build-parameters:
       build-result: app/
       requires:
-        - name: externalcaovp
-          artifacts:
-            - ovp.zip
-          target-path: app/
         - name: externalcasites_down
           artifacts:
             - sites_down.zip
           target-path: app/
 
-  - name: externalcaovp
-    type: html5
-    path: app/ovp
-    build-parameters:
-      build-result: dist
-      builder: custom
-      commands:
-        - npm run build
-      supported-platforms:
-        []
   - name: externalcasites_down
     type: html5
     path: app/sites_down
